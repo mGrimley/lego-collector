@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Lego List</h1>
+
+{% for lego_set in lego %}
+    <div class="card">
+        <a href="{% url 'detail' lego_set.id %}">
+            <div class="card-content">
+                <span class="card-title">{{ lego_set.title }}</span>
+                <p>Description: {{ lego_set.description|linebreaks }}</p>
+                <p>Pieces: {{ lego_set.pieces }}</p>
+                {% if lego_set.cost > 0 %}
+                    <p>Cost: {{ lego_set.cost }}</p>
+                {% else %}
+                    <p>Cost: Free</p>
+                {% endif %}
+                <p>Store Page: {{ lego_set.store_page }}</p>
+                <p>Set ID: {{ lego_set.set_id }}</p>
+                {% if lego_set.owned == True %}
+                    <p>Owned: Yes</p>
+                {% else %}
+                    <p>Owned: No</p>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+{% endfor %}
+
+{% endblock %}
