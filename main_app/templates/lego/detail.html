@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Lego Details</h1>
+
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ lego.title }}</span>
+        <p>Description: {{ lego.description|linebreaks }}</p>
+        <p>Pieces: {{ lego.pieces }}</p>
+        {% if lego.cost > 0 %}
+          <p>Cost: {{ lego.cost }}</p>
+        {% else %}
+          <p>Cost: Free</p>
+        {% endif %}
+        <p>Store Page: <a href="{{ lego.store_page }}">Link</a></p>
+        <p>Set ID: {{ lego.set_id }}</p>
+        {% if lego.owned == True %}
+          <p>Owned: Yes</p>
+        {% else %}
+          <p>Owned: No</p>
+        {% endif %}
+      </div>
+      <div class="card-action">
+        <a href="{% url 'lego_update' lego.id %}">Edit</a>
+        <a href="{% url 'lego_delete' lego.id %}">Delete</a>
+      </div>
+    </div>
+  </div>
+  <div class="col s6">
+    <form action="{% url 'add_building' lego.id %}" method="POST">
+      {% csrf_token %}
+      {{ building_form.as_p }}
+      <button class="btn" type="submit">Add Building</button>
+    </form>
+    <table class="striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for building in lego.building_set.all %}
+        <tr>
+          <td>{{building.date}}</td>
+          <td>{{building.get_description_display}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
